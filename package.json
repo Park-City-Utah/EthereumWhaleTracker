@@ -1,0 +1,17 @@
+{
+  "name": "whale_tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "crypto": "^1.0.1",
+    "ethers": "^5.6.9",
+    "play-sound": "^1.1.5",
+    "web3": "^4.0.3"
+  }
+}
