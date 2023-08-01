@@ -41,12 +41,12 @@ const processTransactions = (block) => {
       let ethValue = transaction.value/CONVERSION_RATE;
         if(ethValue >= TARGET_VALUE) {
           playSound();
-          console.log(` Whale Alert!
-            Iteration: ${i}
-            Transaction number: ${transaction.transactionIndex}
-            Value (Eth): ${ethValue}
-            Whale Address: ${block.transactions[i].from}
-          `.yellow);
+          console.log(`Whale Alert!
+Transaction number: ${transaction.transactionIndex}
+Value (Eth): ${ethValue}
+Transaction: https://etherscan.io/tx/${transaction.hash}
+Wallet: https://etherscan.io/address/${block.transactions[i].from}  
+          `);
         }  
       }
     console.log(`End of Block Transaction list. Awaiting new Block for processiing...\n`);
@@ -59,7 +59,7 @@ const main = async () => {
   console.log(`Whale tracker started! Listening for large transfers on Ethereum...\n`.blue);
   // On new block, process transactions on the blockchain
   provider.on("block", async () => {
-    console.log(`New Block Detected.`);
+    console.log(`New Block Detected.`.yellow);
     let blockNumber = await getBlockNumber();
     let block = await getBlockWithTransactions(blockNumber);
     processTransactions(block);
