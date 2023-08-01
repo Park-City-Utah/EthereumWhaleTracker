@@ -6,7 +6,7 @@ const player = require('play-sound')(opts = {})
 const rpcURL = 'https://cloudflare-eth.com/'
 const provider = new ethers.providers.JsonRpcProvider(rpcURL)
 const CONVERSION_RATE = 1000000000000000000;
-const TARGET_VALUE = 50;
+const TARGET_VALUE = 2;
 
 const playSound = () => {
   player.play('ding.mp3', function(err){
@@ -16,7 +16,6 @@ const playSound = () => {
 
 // Retrieve current block number
 const getBlockNumber = async () => {
-  console.log(` Getting current block number`);
   try{  
     return await provider.getBlockNumber();
   }catch(err){
@@ -26,7 +25,6 @@ const getBlockNumber = async () => {
 
 // Retrieve current block WITH TRANSACTIONS for processing
 const getBlockWithTransactions = async (blockNumber) => {
-  console.log(` Getting block with transactions`);
   try{
     return await provider.getBlockWithTransactions(blockNumber); 
   }catch(err){
@@ -36,7 +34,6 @@ const getBlockWithTransactions = async (blockNumber) => {
 
 // Iterate block transactions, itentify value > 1 Eth & alert w/ sound
 const processTransactions = (block) => {
-  console.log(` Processing block transactions`);
   const transactions = block.transactions;
   try{
     for(let i = 0; i < transactions.length; i++) {
@@ -63,11 +60,9 @@ const main = async () => {
   // On new block, process transactions on the blockchain
   provider.on("block", async () => {
     console.log(`New Block Detected.`);
-    await getBlockNumber()
-    .then( (blockNumber) => {return getBlockWithTransactions(blockNumber)} )
-    .then( (block) => { return processTransactions(block)} )
-    .catch( (error) => {
-      console.log(`Error ${error.message}`)});
+    let blockNumber = await getBlockNumber();
+    let block = await getBlockWithTransactions(blockNumber);
+    processTransactions(block);
   });
 }
 
